@@ -34,20 +34,114 @@ typedef struct s_pattern {
 
 void s21_grep(int argc, char **argv);
 
+/**
+ * @brief Initialization massive of pattern structures
+ * 
+ * @param patns Pattern structures
+ * @param size Number of sructures
+ */
 void init_patterns(t_pattern *patns, int size);
+
+
+/**
+ * @brief Initialization massive of file structures
+ * 
+ * @param files File structures
+ * @param size Number of structures
+ */
 void init_files(t_file *files, int size);
 
+
+/**
+ * @brief Get the flags from argv[i] object
+ * 
+ * @param arg argv[i]
+ * @param flags Pointer to massive of (int) where it is flags
+ * @return error number 0 - OK; 1 - there is no flags
+ */
 void get_flags(int argc, char **argv, t_pattern *patns, int *patns_cnt, int *flags);
+
+
+/**
+ * @brief Get the flags from argv[i] object
+ * 
+ * @param arg argv[i]
+ * @param flags Pointer to massive of (int) where it is flags
+ * @return error number 0 - OK; 1 - there is no flags
+ */
 int get_flags_from_argv(char *arg, int *flags);
 
+
+/**
+ * @brief Get the pattern file name object for -f flag
+ * 
+ * @param argv 
+ * @param i 
+ * @return char* 
+ */
 char *get_pattern_file_name(char **argv, int i);
+
+/**
+ * @brief Get the e pattern object from argv[i+1]
+ * 
+ * @param argv 
+ * @param i 
+ * @return char* 
+ */
 char *get_e_pattern(char **argv, int i);
 
+
+/**
+ * @brief Initialize work with files if files is founded
+ * 
+ * @param argc
+ * @param argv
+ * @param patns Pattern structures
+ * @param patns_cnt Number of sructures 
+ * @param flags Pointer to massive of (int) where it is flags
+ */
 void scan_files(int argc, char **argv, t_pattern *patns, int patns_cnt, int *flags);
-int is_arg_a_file(int i, char **argv, t_pattern *patns, int *same, const int *flags);
-int cnt_files(int argc, char **argv, t_pattern *patns, int *flags);
+
+
+/**
+ * @brief Check out is argv[i] a file
+ * 
+ * @param i 
+ * @param argv 
+ * @return int 
+ */
+int is_arg_a_file(int i, char **argv);
+
+
+/**
+ * @brief Return number of files in argv
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
+int cnt_files(int argc, char **argv);
+
+
+/**
+ * @brief Return pattern from argv
+ * 
+ * @param argc 
+ * @param argv 
+ * @return char* 
+ */
 char *get_default_pattern(int argc, char **argv);
-void get_files(int argc, char **argv, t_pattern *patns, t_file *files, int *flags);
+
+
+/**
+ * @brief Write into the files massive filenames if it is a file
+ * 
+ * @param argc 
+ * @param argv 
+ * @param files File structures 
+ */
+void get_files(int argc, char **argv, t_file *files);
+
 void files_processing(t_pattern *patns, int patns_cnt, t_file *files, int files_cnt, int *flags);
 int seek_in_file(FILE *fd, t_pattern *patns, int patns_cnt, int *flags, t_file *file, int files_cnt);
 

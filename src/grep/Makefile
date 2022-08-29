@@ -14,7 +14,6 @@ clean:
 	rm -rf s21_grep.d* s21_grep_test s21_grep s21_grep_test.g*s s21_grep_test.g* ../common/tmp*
 
 check: s21_grep s21_grep_test
-	chmod +x ../../materials/linters/cpplint.py *.c
 	cp ../../materials/linters/CPPLINT.cfg ./
 	cppcheck --enable=all --suppress=missingIncludeSystem *.c *.h
 	python3 ../../materials/linters/cpplint.py --extensions=c *.c *.h

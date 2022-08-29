@@ -19,11 +19,11 @@ void s21_grep(int argc, char **argv) {
 }
 
 void scan_files(int argc, char **argv, t_pattern *patns, int patns_cnt, int *flags) {
-    int kFiles_cnt = cnt_files(argc, argv, patns, flags);
+    int kFiles_cnt = cnt_files(argc, argv);
     if (kFiles_cnt) {
         t_file files[kFiles_cnt];
         init_files(files, kFiles_cnt);
-        get_files(argc, argv, patns, files, flags);
+        get_files(argc, argv, files);
         files_processing(patns, patns_cnt, files, kFiles_cnt, flags);
     } else {
         printf("No files found");
@@ -265,12 +265,10 @@ void trim_n(char *line) {
     if (line[strlen(line) - 1] == '\n') line[strlen(line) - 1] = '\0';
 }
 
-void get_files(int argc, char **argv, t_pattern *patns, t_file *files,
-               int *flags) {
-    int same = 0;
+void get_files(int argc, char **argv, t_file *files) {
     int k = 0;
     for (int i = 1; i < argc; i++)
-        if (is_arg_a_file(i, argv, patns, &same, flags))
+        if (is_arg_a_file(i, argv))
             files[k++].file_name = argv[i];
 }
 
@@ -283,25 +281,21 @@ int do_regcomp(regex_t *regex, int *flags, char *pattern) {
     return comp_val;
 }
 
-int cnt_files(int argc, char **argv, t_pattern *patns, int *flags) {
+int cnt_files(int argc, char **argv) {
     int res = 0;
-    int same = 0;
     for (int i = 1; i < argc; i++)
-        if (is_arg_a_file(i, argv, patns, &same, flags)) res++;
+        if (is_arg_a_file(i, argv)) res++;
     return res;
 }
 
-int is_arg_a_file(int i, char **argv, t_pattern *patns, int *same,
-                  const int *flags) {
-    return (!strspn(argv[i], "-") &&
-            !((strchr(argv[i], 'f') && strspn(argv[i], "-")) ||
-              (i != 1 && argv[i - 1][strlen(argv[i - 1]) - 1] == 'f' &&
-               strspn(argv[i - 1], "-")) ||
-              (strchr(argv[i], 'e') && strspn(argv[i], "-")) ||
-              (i != 1 && argv[i - 1][strlen(argv[i - 1]) - 1] == 'e' &&
-               strspn(argv[i - 1], "-")) ||
-              (!(flags[8] || flags[0]) && !strcmp(argv[i], patns[0].name) &&
-               ((*same)--) >= 0)));
+int is_arg_a_file(int i, char **argv) {
+    int flag = 0;
+    FILE *file = NULL;
+    if ((file = fopen(argv[i], "r"))) {
+        fclose(file);
+        flag = 1;
+    }
+    return flag;
 }
 
 char *get_default_pattern(int argc, char **argv) {
