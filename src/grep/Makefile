@@ -1,4 +1,3 @@
-.PHONY: all clean test check rebuild s21_grep
 CC=gcc
 CFLAGS=-Wall -Werror -Wextra -std=c11 -D_GNU_SOURCE
 
